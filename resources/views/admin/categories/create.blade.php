@@ -6,6 +6,12 @@
     <h1>
         Cadastrar nova Categoria
     </h1>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="http://">Dashboard</a></li>
+        <li class=" active breadcrumb-item"><a href="{{route('index')}}">Categorias</a></li>
+        <li class=" active breadcrumb-item"><a href="{{route('create')}}">Cadastrar</a></li>
+    </ol>
     
 @stop
 

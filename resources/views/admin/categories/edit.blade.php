@@ -6,6 +6,12 @@
     <h1>
         Editar Categoria
     </h1>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="http://">Dashboard</a></li>
+        <li class=" active breadcrumb-item"><a href="{{route('index')}}">Categorias</a></li>
+        <li class=" active breadcrumb-item"><a href="{{route('edit', $category->id)}}">Editar</a></li>
+    </ol>
     
 @stop
 
@@ -23,7 +29,7 @@
                 @endif
                 
                 <div class="table-responsive">
-                    <form action="{{route('edit', $category->id)}}" method="POST">
+                    <form action="{{route('update', $category->id)}}" method="POST">
                         @method('PUT')
                        
                         @include('admin/categories/form')
