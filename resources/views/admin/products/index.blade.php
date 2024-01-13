@@ -4,13 +4,13 @@
 
 @section('content_header')
     <h1>
-        <a href="{{route('create')}}" class="btn btn-primary">Adicionar</a>
-        Categorias
+        <a href="{{route('product.create')}}" class="btn btn-primary">Adicionar</a>
+        Produtos
     </h1>
     
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="http://">Dashboard</a></li>
-        <li class=" active breadcrumb-item"><a href="{{route('product.index')}}">Produtos</a></li>
+        <li class=" active breadcrumb-item"><a href="{{route('index')}}">Categorias</a></li>
     </ol>
     
 @stop
@@ -39,31 +39,33 @@
                     <table class="table table-hover" style="width: 100%">
                         <thead>
                           <tr>
-                            <th scope="col">id</th>
-                            <th scope="col">Título</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Nome</th>
                             <th scope="col">url</th>
+                            <th scope="col">Preço</th>
                             <th scope="col">Descrição</th>
                             <th scope="col">Ações</th>
                           </tr>
                         </thead>
                         <tbody>
-                            @foreach ($categories as $category)
+                            @foreach ($products as $product)
                                 <tr>
-                                    <th scope="row">{{$category->id}}</th>
-                                    <td>{{$category->title}}</td>
-                                    <td>{{$category->url}}</td>
-                                    <td>{{$category->description}}</td>
-                                    <td><a class="btn btn-warning"  href="{{route("edit", $category->id)}}">Editar</a></td>
-                                    <td><a class="btn btn-primary"  href="{{route("show", $category->id)}}">Detalhes</a></td>
+                                    <td>{{$product->category->title}}</td>
+                                    <td>{{$product->name}}</td>
+                                    <td>{{$product->url}}</td>
+                                    <td>{{$product->price}}</td>
+                                    <td>{{$product->description}}</td>
+                                    <td><a class="btn btn-warning"  href="{{route("product.edit", $product->id)}}">Editar</a></td>
+                                    <td><a class="btn btn-primary"  href="{{route("product.show", $product->id)}}">Detalhes</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
 
                         @if(isset($search))
-                        {{ $categories->appends(['search' => $search])->links('pagination::bootstrap-4') }}
+                        {{ $products->appends(['search' => $search])->links('pagination::bootstrap-4') }}
                         @else
-                            {{ $categories->links('pagination::bootstrap-4') }}
+                            {{ $products->links('pagination::bootstrap-4') }}
                         @endif
                 
                 </div>

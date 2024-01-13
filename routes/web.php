@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +28,14 @@ Route::prefix('admin/categories')->group(function(){
     Route::get('/show/{id}', [CategoryController::class, 'show'])->name('show');
     Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('delete');
 });
+
+Route::prefix('admin/products')->group(function(){
+    Route::get('/', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+    Route::post('/store', [ProductController::class, 'store'])->name('product.store');
+    Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::put('/update/{id}', [ProductController::class, 'update'])->name('product.update');
+    Route::get('/show/{id}', [ProductController::class, 'show'])->name('product.show');
+    Route::delete('/delete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
+});
+
