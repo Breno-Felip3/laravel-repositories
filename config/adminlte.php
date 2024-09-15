@@ -297,7 +297,7 @@ return [
         ],
         [
             'text'        => 'Produtos',
-            'url'         => 'admin/productis',
+            'url'         => 'admin/products',
             'icon'        => 'file',
         ],
     ],

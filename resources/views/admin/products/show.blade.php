@@ -26,11 +26,13 @@
                 <p> <strong>Preço: </strong>{{$product->price}}</p>
                 <p> <strong>Descrição: </strong>{{$product->description}}</p>
                 <hr>
-                <td><form action="{{ route('product.delete', $product->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
-                </form></td>
+                <td>
+                    <form action="{{ route('product.delete', $product->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
+                    </form>
+                </td>
             </div>
         </div>
     </div>

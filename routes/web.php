@@ -17,8 +17,6 @@ Route::get('admin', function(){
 
 })->name('admin');
 
-Route::any('admin/categories/pesquisar', [CategoryController::class, 'search'])->name('search');
-
 Route::prefix('admin/categories')->group(function(){
     Route::get('/', [CategoryController::class, 'index'])->name('index');
     Route::get('/create', [CategoryController::class, 'create'])->name('create');
@@ -27,6 +25,7 @@ Route::prefix('admin/categories')->group(function(){
     Route::put('/update/{id}', [CategoryController::class, 'update'])->name('update');
     Route::get('/show/{id}', [CategoryController::class, 'show'])->name('show');
     Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('delete');
+    Route::any('/pesquisar', [CategoryController::class, 'search'])->name('search');
 });
 
 Route::prefix('admin/products')->group(function(){
@@ -37,5 +36,6 @@ Route::prefix('admin/products')->group(function(){
     Route::put('/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::get('/show/{id}', [ProductController::class, 'show'])->name('product.show');
     Route::delete('/delete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
+    Route::any('/pesquisar', [ProductController::class, 'search'])->name('search');
 });
 

@@ -5,19 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCategory;
 use App\Models\Category;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    protected $repository;
+    public function __construct(CategoryRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
    
     public function index()
     {
-        $categories = Category::orderBy('id', 'desc')->paginate();
+        $categories = $this->repository->paginate();
 
         return view('admin/categories/index', compact('categories'));
     }
 
-  
     public function create()
     {
         return view('admin/categories.create');
@@ -31,15 +36,14 @@ class CategoryController extends Controller
             'description' => $request->descricao
         ];
 
-        Category::create($dados);
+        $this->repository->create($dados);
 
-        return redirect()->route('index')->with('success', 'Cadastro Realizado com Sucesso');
-        
+        return redirect()->route('index')->withSuccess('success', 'Cadastro Realizado com Sucesso');
     }
    
     public function edit(string $id)
     {
-        $category = Category::find($id);
+        $category = $this->repository->findById($id);
 
         if(!$category){
             return redirect()->back();
@@ -50,23 +54,20 @@ class CategoryController extends Controller
 
     public function update(StoreUpdateCategory $request, $id)
     {
-        $category = Category::find($id);
-
         $dados = [
             'title' => $request->title,
             'url' => $request->url,
             'description' => $request->descricao
         ];
 
-        $category->update($dados);
+        $this->repository->update($id, $dados);
 
         return redirect()->route('index');
     }
 
     public function show(string $id)
     {
-        $category = Category::find($id);
-
+        $category = $this->repository->findById($id);
         if(!$category){
             return redirect()->back();
         }
@@ -74,24 +75,16 @@ class CategoryController extends Controller
         return view('admin/categories/show', compact('category'));
     }
 
-   
     public function destroy(string $id)
     {
-        $category = Category::find($id);
-
-        $category->delete();
-
+        $this->repository->delete($id);
         return redirect()->route('index');
     }
 
     public function search(Request $request)
     {
         $search = $request->search;
-        $categories = Category::where('title', 'like', "%$search%")
-                        ->orWhere('url', 'like', "%$search%")
-                        ->orWhere('description', 'like', "%$search%")
-                        ->orderBy('id', 'desc')
-                        ->paginate();
+        $categories = $this->repository->search($search);
         
         return view('admin/categories/index', compact('categories', 'search'));
     }   

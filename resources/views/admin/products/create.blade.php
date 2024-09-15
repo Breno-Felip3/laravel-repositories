@@ -29,11 +29,11 @@
                 @endif
                 
                 <div class="table-responsive">
-                    <form action="{{route('product.store')}}" method="POST">
+                    {{Form::open(['route' => 'product.store', 'class' => 'form'])}}
                         @include('admin/products/form')
-                          
-                        <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    </form>
+                    {{Form::close()}}
+                    
+                 
                 </div>
             </div>
         </div>

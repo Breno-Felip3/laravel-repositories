@@ -5,13 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateProduct;
 use App\Models\Category;
-use App\Models\Product;
+use App\Repositories\Contracts\ProductRepositoryInterface;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    protected $repository;
+
+    public function __construct(ProductRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function index()
     {
-        $products = Product::orderBy('id', 'desc')->with('category')->paginate();
+        $products = $this->repository->getAll();
 
         return view('admin/products/index', compact('products'));
     }
@@ -25,24 +33,13 @@ class ProductController extends Controller
 
     public function store(StoreUpdateProduct $request)
     {
-        
-        $dados = [
-            'category_id' => $request->category_id,
-            'name' => $request->name,
-            'url' => $request->url,
-            'price' => $request->price,
-            'description' => $request->description
-        ];
-        
-        Product::create($dados);
-
+        $this->repository->create($request->all());
         return redirect()->route('product.index');
-
     }
 
     public function show(string $id)
     {
-        if (!$product = Product::with('category')->find($id)){
+        if (!$product = $this->repository->findById($id)){
             return redirect()->back();
         } 
 
@@ -51,7 +48,7 @@ class ProductController extends Controller
 
     public function edit(string $id)
     {
-        if (!$product = Product::find($id)){
+        if (!$product = $this->repository->findById($id)){
             return redirect()->back();
         } 
         
@@ -62,31 +59,22 @@ class ProductController extends Controller
 
     public function update(StoreUpdateProduct $request, string $id)
     {
-        if (!$product = Product::find($id)){
-            return redirect()->back();
-        };
+        $this->repository->update($id, $request->all());
 
-        $dados = [
-            'category_id' => $request->category_id,
-            'name' => $request->name,
-            'url' => $request->url,
-            'price' => $request->price,
-            'description' => $request->description
-        ];
-
-        $product->update($dados);
-
-        return redirect()->route('product.index')->with('Produto atualizado com suceso');
+        return redirect()->route('product.index')->withSuccess('Produto atualizado com suceso');
     }
 
     public function destroy(string $id)
     {
-        if (!$product = Product::find($id)){
-            return redirect()->back();
-        };
-
-        $product->delete();
-
-        return redirect()->route('product.index')->with('Produto excluido com suceso');
+        $this->repository->delete($id);
+        return redirect()->route('product.index')->withSuccess('Produto excluido com suceso');
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        $products = $this->repository->search($search);
+        
+        return view('admin/products/index', compact('products'));
+    }   
 }

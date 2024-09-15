@@ -61,13 +61,11 @@
                             @endforeach
                         </tbody>
                     </table>
-
-                        @if(isset($search))
+                    @if(isset($search))
                         {{ $products->appends(['search' => $search])->links('pagination::bootstrap-4') }}
-                        @else
-                            {{ $products->links('pagination::bootstrap-4') }}
-                        @endif
-                
+                    @else
+                        {{ $products->links('pagination::bootstrap-4') }}
+                    @endif
                 </div>
             </div>
         </div>
